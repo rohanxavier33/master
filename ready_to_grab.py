@@ -18,23 +18,23 @@ class ReadyToGrab(py_trees.behaviour.Behaviour):
        
     
     def initialise(self):
-        print("ready.initialise() called")
+        pass
         
     def update(self):
-        self.robot_joints =  {
-        'torso_lift_joint': 0.308,
-        'arm_1_joint': 1.218,
-        'arm_2_joint': -0.442,
-        'arm_3_joint': -2.815,
-        'arm_4_joint': 0.515,
-        'arm_5_joint': -1.242,
-        'arm_6_joint': .334,
-        'arm_7_joint': 0,
-        'gripper_left_finger_joint': 0.045,
-        'gripper_right_finger_joint': 0.045,
-        'head_1_joint': 0,
-        'head_2_joint': 0
-}
+        self.robot_joints = {
+    'torso_lift_joint': 0.20,
+    'arm_1_joint': 1.57,
+    'arm_2_joint': 0.314,
+    'arm_3_joint': 0,
+    'arm_4_joint': 0.35,
+    'arm_5_joint': 0,
+    'arm_6_joint': 0,
+    'arm_7_joint': 1.57,
+    'head_1_joint': 0,
+    'head_2_joint': 0,
+    'gripper_left_finger_joint': 0.045,
+    'gripper_right_finger_joint': 0.045,
+        }
         # Initialize motors and set target positions
         self.motors = {}
         for name in self.robot_joints:

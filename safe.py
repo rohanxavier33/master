@@ -6,20 +6,19 @@ class Safe(py_trees.behaviour.Behaviour):
         super(Safe, self).__init__(name)
         self.robot = blackboard.read('robot')
         self.blackboard = blackboard
-        print("Safe behaviour initialized")
+
        
     def setup(self):
-        print("Safe.setup() called")
+
         self.timestep = int(self.robot.getBasicTimeStep())
         self.gps = self.robot.getDevice('gps')
         self.gps.enable(self.timestep)
         self.compass = self.robot.getDevice('compass')
         self.compass.enable(self.timestep)
-        print("Safe behaviour setup complete")
         return py_trees.common.Status.RUNNING
     
     def initialise(self):
-       print("Safe.initialise() called")
+       pass
 
     def update(self):
          # Define target positions for each joint
@@ -63,7 +62,7 @@ class Safe(py_trees.behaviour.Behaviour):
             sum_sq_error += error ** 2
            
        
-        if sum_sq_error < 0.001:
+        if sum_sq_error < 0.008:
             print("Safe position reached, returning SUCCESS")
             return py_trees.common.Status.SUCCESS
         else:
