@@ -1,8 +1,7 @@
-import py_trees as pt
-import numpy as np
+import py_trees
 import math
 
-class Rotate(pt.behaviour.Behaviour):
+class Rotate(py_trees.behaviour.Behaviour):
     def __init__(self, name: str, blackboard, target):
         super().__init__(name)
         self.name = name
@@ -31,18 +30,18 @@ class Rotate(pt.behaviour.Behaviour):
         if rel_err is None:
             # turn right by default, since robot must find target object
             self.turn_right()
-            return pt.common.Status.RUNNING
+            return py_trees.common.Status.RUNNING
 
         y_err = rel_err[1]
         if math.fabs(y_err) <= self.target_threshold:
-            return pt.common.Status.SUCCESS
+            return py_trees.common.Status.SUCCESS
 
         if y_err < 0:
             self.turn_right()
         else:
             self.turn_left()
 
-        return pt.common.Status.RUNNING
+        return py_trees.common.Status.RUNNING
 
     def turn_right(self):
         self.right_motor.setVelocity(-self.rotation_speed)
@@ -52,7 +51,7 @@ class Rotate(pt.behaviour.Behaviour):
         self.right_motor.setVelocity(self.rotation_speed)
         self.left_motor.setVelocity(-self.rotation_speed)
 
-    def terminate(self, new_status: pt.common.Status):
+    def terminate(self, new_status: py_trees.common.Status):
         self.left_motor.setVelocity(0)
         self.right_motor.setVelocity(0)
 

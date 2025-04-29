@@ -1,8 +1,7 @@
-import py_trees as pt
-import numpy as np
+import py_trees
 import math
 
-class StraightForward(pt.behaviour.Behaviour):
+class StraightForward(py_trees.behaviour.Behaviour):
     def __init__(self, name: str, blackboard, threshold=0.85):
         super().__init__(name)
         self.name = name
@@ -29,7 +28,7 @@ class StraightForward(pt.behaviour.Behaviour):
         rel_err = self.blackboard.read('target_object_error')
         if rel_err is None:
             self.offset = 0
-            return pt.common.Status.RUNNING
+            return py_trees.common.Status.RUNNING
         else:
             # compensate for easiness of gripping object
             self.offset = 0.03
@@ -37,14 +36,14 @@ class StraightForward(pt.behaviour.Behaviour):
         x_err = rel_err[0]
         y_err = rel_err[1] + self.offset
         if math.fabs(x_err) <= self.threshold:
-            return pt.common.Status.SUCCESS
+            return py_trees.common.Status.SUCCESS
 
         self.left_motor.setVelocity(self.motor_speed - y_err)
         self.right_motor.setVelocity(self.motor_speed + y_err)
 
-        return pt.common.Status.RUNNING
+        return py_trees.common.Status.RUNNING
 
-    def terminate(self, new_status: pt.common.Status):
+    def terminate(self, new_status: py_trees.common.Status):
         self.left_motor.setVelocity(0)
         self.right_motor.setVelocity(0)
 

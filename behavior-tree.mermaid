@@ -1,0 +1,45 @@
+graph TD
+    A[Main Sequence] --> B[Move to Safe Position]
+    B --> C[Ready to Grab]
+    C --> D[Plan Move to Counter]
+    D --> E[Navigate to Counter]
+    
+    E --> F{Adjust Position to Jar 1}
+    F --> |Parallel| G1[Get Relative Error]
+    F --> |Parallel| G2[Rotate Search]
+    
+    F --> H{Fine Adjust Position}
+    H --> |Parallel| I1[Get Relative Error]
+    H --> |Parallel| I2[Move Forward]
+    
+    H --> J[Grab Jar]
+    J --> K[Back Up]
+    K --> L[Move to Safe Position]
+    
+    L --> M[Plan Move to Table]
+    M --> N[Navigate to Table]
+    
+    N --> O{Recognize Table}
+    O --> |Parallel| P1[Get Relative Error]
+    O --> |Parallel| P2[Rotate Search]
+    
+    O --> Q{Approach Table}
+    Q --> |Parallel| R1[Get Relative Error]
+    Q --> |Parallel| R2[Move Forward]
+    
+    Q --> S[Let Go]
+    S --> T[Move to Safe Position]
+    
+    T --> U[... Repeat for Jar 2]
+    U --> V[... Repeat for Honey Jar]
+    
+    V --> W[Final Back Up]
+    W --> X[Final Safe Position]
+    X --> Y[Stop Robot]
+
+    classDef default fill:#fff,stroke:#333,stroke-width:2px
+    classDef main fill:#e6f3ff,stroke:#333,stroke-width:4px,color:#000
+    classDef parallel fill:#fff5e6,stroke:#333,stroke-width:2px,color:#000
+    
+    class A main
+    class F,H,O,Q parallel

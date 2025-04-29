@@ -1,5 +1,5 @@
 import py_trees
-import numpy as np
+
 
 class Safe(py_trees.behaviour.Behaviour):
     def __init__(self, name, blackboard):

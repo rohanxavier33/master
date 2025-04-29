@@ -80,8 +80,8 @@ class GetRelativeError(py_trees.behaviour.Behaviour):
         # Transform object position to robot coordinate frame
         p0 = np.array([*list(target_object.getPosition()), 1])  # Homogeneous coords
         # Apply transformation chain: camera → base → effector
-        transformed_pos = p0 @ self.T_0_1 @ self.T_1_2 @ self.T_2_3  
-        self.blackboard.write('target_object_error', transformed_pos)  # Share error data
+        transform_pos = p0 @ self.T_0_1 @ self.T_1_2 @ self.T_2_3  
+        self.blackboard.write('target_object_error', transform_pos)  # Share error data
 
         return py_trees.common.Status.RUNNING  # Continuous monitoring
 
