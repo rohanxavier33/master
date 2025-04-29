@@ -27,14 +27,13 @@ class StraightForward(py_trees.behaviour.Behaviour):
     def update(self):
         rel_err = self.blackboard.read('target_object_error')
         if rel_err is None:
-            self.offset = 0
+            self.off_val = 0
             return py_trees.common.Status.RUNNING
         else:
-            # compensate for easiness of gripping object
-            self.offset = 0.03
+            self.off_val = 0.03
 
         x_err = rel_err[0]
-        y_err = rel_err[1] + self.offset
+        y_err = rel_err[1] + self.off_val
         if math.fabs(x_err) <= self.threshold:
             return py_trees.common.Status.SUCCESS
 

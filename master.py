@@ -1,8 +1,7 @@
 # Module Imports
 # --------------------------
-import numpy as np  # Numerical operations
 import py_trees  # Behavior tree implementation
-from py_trees.composites import Sequence, Parallel, Selector  # Behavior tree nodes
+from py_trees.composites import Sequence, Parallel  # Behavior tree nodes
 
 # Custom behavior implementations for robot tasks
 from safe import Safe
@@ -18,7 +17,7 @@ from back_up import BackUp
 from let_go import LetGo
 
 # Webots robot control API
-from controller import Robot, Supervisor
+from controller import Supervisor
 
 # --------------------------
 # Robot Initialization
