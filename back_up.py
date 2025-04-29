@@ -7,7 +7,7 @@ class BackUp(pt.behaviour.Behaviour):
         self.robot = blackboard.read('robot')
         self.blackboard = blackboard
         self.motor_speed = 1.14
-        self.timestep_needed = dist / self.motor_speed * 25
+        self.timestep_needed = dist / self.motor_speed * 12
 
 
     def setup(self):

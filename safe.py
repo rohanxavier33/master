@@ -23,7 +23,7 @@ class Safe(py_trees.behaviour.Behaviour):
     def update(self):
          # Define target positions for each joint
         self.robot_joints = {
-            'torso_lift_joint': 0.35,
+            'torso_lift_joint': 0.3,
             'arm_1_joint': 0.71,
             'arm_2_joint': 1.02,
             'arm_3_joint': -2.815,

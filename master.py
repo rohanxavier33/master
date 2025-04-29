@@ -32,21 +32,26 @@ class Blackboard:
         return self.data.get(key)
 
 recog_colors = {
-    'jam_jar': [0.55, 0.06, 0.06],
+    'jam_jar1': [0.55, 0.06, 0.06],
+    'jam_jar2': [1, 1, 1],
     'honey_jar': [0.0, 0.0, 1.0],
     'table': [1.0, 0.5, 0.0],
 }
 
 
 center_thresh = {
-    'jam_jar': 0.005,
-    'honey_jar': 0.005,
+    'jam_jar1': 0.005,
+    'jam_jar2': 0.001,
+    'honey_jar': 0.0005,
     'table': 0.05,
 }
 # Initialize shared data storage and populate initial values        
 blackboard = Blackboard()
 blackboard.write('robot', robot)  # Share robot controller instance
-blackboard.write('waypoints', [(0.582, -0.02), (0.582, 0.02), (0.582, 0.04)])
+blackboard.write('waypoints', [(.75,0),(.75,-1.2),(.75,-2),(.75, -3.15),(-.84,-3.15),
+       (-1.65,-3),(-1.65, -2.6),
+      (-1.65, -2),(-1.7,-.5),(-1.7,0),(-.76,0.4), (0,0)]
+)
 blackboard.write('recognition_colors', recog_colors),
 blackboard.write('centering_threshold', center_thresh),
 
@@ -63,22 +68,22 @@ tree = Sequence("Main", children=[
         "Adjust position to jar",
         policy=py_trees.common.ParallelPolicy.SuccessOnOne(),
         children=[
-            GetRelativeError("Measure relative position", blackboard, 'jam_jar'),
-            Rotate("Searching object", blackboard, 'jam_jar'),
+            GetRelativeError("Measure relative position", blackboard, 'jam_jar1'),
+            Rotate("Searching object", blackboard, 'jam_jar1'),
         ]
     ),
     Parallel(
         "Adjust position to jar",
         policy=py_trees.common.ParallelPolicy.SuccessOnOne(),
         children=[
-            GetRelativeError("Measure relative position", blackboard, 'jam_jar'),
+            GetRelativeError("Measure relative position", blackboard, 'jam_jar1'),
             StraightForward("Move forward", blackboard),
         ]
     ),
     Grab("Grab jar", blackboard),
     BackUp("Back up", blackboard),
     Safe("moving to safe position", blackboard),
-    Planning("moving to table", blackboard, (0.55, -0.6)),
+    Planning("moving to table", blackboard, (0.4, -0.6)),
     Navigation("move to table", blackboard),
     Parallel(
         "Recognize Table", policy=py_trees.common.ParallelPolicy.SuccessOnOne(), children=[
@@ -94,29 +99,29 @@ tree = Sequence("Main", children=[
     ),
     LetGo("let go", blackboard),
     Safe("moving to safe position", blackboard),
-    Planning("moving to counter", blackboard, (.45, 0.07)),
+    Planning("moving to counter", blackboard, (.14, 0.08)),
     Navigation("move to counter", blackboard),
+    Parallel(
+        "Adjust position to jar",
+        policy=py_trees.common.ParallelPolicy.SuccessOnOne(),
+        children=[
+            GetRelativeError("Measure relative position", blackboard, 'jam_jar2'),
+            Rotate("Searching object", blackboard, 'jam_jar2'),
+        ]
+    ),
     ReadyToGrab("moving to grabbing position", blackboard),
     Parallel(
         "Adjust position to jar",
         policy=py_trees.common.ParallelPolicy.SuccessOnOne(),
         children=[
-            GetRelativeError("Measure relative position", blackboard, 'jam_jar'),
-            Rotate("Searching object", blackboard, 'jam_jar'),
-        ]
-    ),
-    Parallel(
-        "Adjust position to jar",
-        policy=py_trees.common.ParallelPolicy.SuccessOnOne(),
-        children=[
-            GetRelativeError("Measure relative position", blackboard, 'jam_jar'),
+            GetRelativeError("Measure relative position", blackboard, 'jam_jar2'),
             StraightForward("Move forward", blackboard),
         ]
     ),
     Grab("Grab jar", blackboard),
     BackUp("Back up", blackboard),
     Safe("moving to safe position", blackboard),
-    Planning("moving to table", blackboard, (0.55, -0.6)),
+    Planning("moving to table", blackboard, (0.5, -0.5)),
     Navigation("move to table", blackboard),
     Parallel(
         "Recognize Table", policy=py_trees.common.ParallelPolicy.SuccessOnOne(), children=[
@@ -132,8 +137,45 @@ tree = Sequence("Main", children=[
     ),
     LetGo("let go", blackboard),
     Safe("moving to safe position", blackboard),
-    Planning("moving to counter", blackboard, (.45, 0.07)),
+    Planning("moving to counter", blackboard, (.14, 0.08)),
     Navigation("move to counter", blackboard),
+    Parallel(
+        "Adjust position to jar",
+        policy=py_trees.common.ParallelPolicy.SuccessOnOne(),
+        children=[
+            GetRelativeError("Measure relative position", blackboard, 'honey_jar'),
+            Rotate("Searching object", blackboard, 'honey_jar'),
+        ]
+    ),
+    ReadyToGrab("moving to grabbing position", blackboard),
+    Parallel(
+        "Adjust position to jar",
+        policy=py_trees.common.ParallelPolicy.SuccessOnOne(),
+        children=[
+            GetRelativeError("Measure relative position", blackboard, 'honey_jar'),
+            StraightForward("Move forward", blackboard),
+        ]
+    ),
+    Grab("Grab jar", blackboard),
+    BackUp("Back up", blackboard),
+    Safe("moving to safe position", blackboard),
+    Planning("moving to table", blackboard, (0.45, -0.55)),
+    Navigation("move to table", blackboard),
+    Parallel(
+        "Recognize Table", policy=py_trees.common.ParallelPolicy.SuccessOnOne(), children=[
+            GetRelativeError("Measure relative position", blackboard, 'table'),
+            Rotate("Searching table", blackboard, 'table'),
+        ]
+    ),
+    Parallel(
+        "Approach table", policy=py_trees.common.ParallelPolicy.SuccessOnOne(), children=[
+            GetRelativeError("Measure relative position", blackboard, 'table'),
+            StraightForward("Move forward", blackboard),
+        ]
+    ),
+    LetGo("let go", blackboard),
+    BackUp("Back up", blackboard),
+    Safe("moving to safe position", blackboard),
     Stopping("stop robot", blackboard),
     ], memory=True)
 

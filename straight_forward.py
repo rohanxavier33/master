@@ -12,7 +12,7 @@ class StraightForward(pt.behaviour.Behaviour):
 
     def setup(self):
         self.timestep = int(self.robot.getBasicTimeStep())
-        self.motor_speed = 1.14
+        self.motor_speed = 1.0
 
         self.left_motor = self.robot.getDevice('wheel_left_joint')
         self.right_motor = self.robot.getDevice('wheel_right_joint')
